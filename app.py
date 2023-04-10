@@ -6,4 +6,4 @@ handler = Mangum(app)
 
 @app.get('/')
 async def root():
-    return {'message': 'its all good'}
+    return {'message': 'educate me'}
