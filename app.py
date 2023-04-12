@@ -29,4 +29,4 @@ def execute(sql, type, args = []):
 
 @app.get('/')
 async def root():
-    return {'message': execute('SELECT * FROM educateme.users', 'GET')}
+    return {'message': execute('SELECT * FROM users', 'GET')}
