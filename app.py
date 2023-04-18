@@ -9,31 +9,31 @@ import string
 app = FastAPI()
 handler = Mangum(app)
 rds_client = boto3.client('rds-data', region_name = 'us-west-1')
-'''
+
 class Student(BaseModel):
-    username: str,
-    password: str,
-    subject: str,
-    email: str,
+    username: str
+    password: str
+    subject: str
+    email: str
     address: str
 
 class Teacher(BaseModel):
-    username: str,
-    password: str,
-    subject: str,
+    username: str
+    password: str
+    subject: str
     email: str
 
 class Donator(BaseModel):
-    username: str,
-    password: str,
+    username: str
+    password: str
     email: str
 
 class Donation(BaseModel):
-    title: str,
-    username: str,
-    description: str,
+    title: str
+    username: str
+    description: str
     subject: str
-'''
+
 def execute(sql, type = 'GET', args = []):
     response = rds_client.execute_statement(
         secretArn = os.environ.get('db_credentials_secrets_store_arn'),
@@ -57,7 +57,7 @@ def execute(sql, type = 'GET', args = []):
 @app.get('/')
 async def root():
     return {'status': 'success'}
-'''
+
 @app.post('/post-student')
 async def post_student(student: Student):
     if execute(f'SELECT * FROM student WHERE username = "{student.username}"'):
@@ -156,4 +156,3 @@ async def get_donations(subject: str):
         })
 
     return donations
-'''
