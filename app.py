@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from mangum import Mangum
 import boto3
 import os
-#from pydantic import BaseModel
+from pydantic import BaseModel
 import random
 import string
 
