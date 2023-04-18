@@ -60,7 +60,10 @@ async def root():
 
 @app.post('/post-student')
 async def post_student(student: Student):
-    return "sffd"
+    try:
+        return execute(f'SELECT * FROM student WHERE username = "{student.username}"')
+    except Exception as e:
+        return str(e)
     '''
     if execute(f'SELECT * FROM student WHERE username = "{student.username}"'):
         return {'status': 'error', 'message': 'Username already exists'}
