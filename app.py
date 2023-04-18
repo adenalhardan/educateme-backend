@@ -57,7 +57,7 @@ def execute(sql, type = 'GET', args = []):
 @app.get('/')
 async def root():
     return {'status': 'success'}
-
+'''
 @app.post('/post-student')
 async def post_student(student: Student):
     if execute(f'SELECT * FROM student WHERE username = "{student.username}"'):
@@ -156,3 +156,4 @@ async def get_donations(subject: str):
         })
 
     return donations
+'''
