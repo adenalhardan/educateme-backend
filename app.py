@@ -62,7 +62,9 @@ async def root():
 async def post_student(student: Student):
     if execute(f'SELECT * FROM student WHERE username = "{student.username}"'):
         return {'status': 'error', 'message': 'Username already exists'}
-
+        
+    return {'status': 'success'}
+    '''
     args = [
         {'name': 'username', 'value': {'stringValue': student.username}},
         {'name': 'password', 'value': {'stringValue': student.password}},
@@ -72,6 +74,7 @@ async def post_student(student: Student):
     ]
 
     return execute('INSERT INTO student VALUES(:username, :password, :subject, :email, :address)', 'POST', args)
+    '''
 
 @app.post('/post-teacher')
 async def post_teacher(teacher: Teacher):
