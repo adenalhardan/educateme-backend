@@ -76,7 +76,7 @@ async def post_student(student: Student):
 
 @app.post('/post-teacher')
 async def post_teacher(teacher: Teacher):
-    if execute(f'SELECT * FROM teacher WHERE username = "{teacher.username}"'):
+    if execute(f'SELECT * FROM teacher WHERE username = \'{teacher.username}\''):
         return {'status': 'error', 'message': 'Username already exists'}
 
     args = [
@@ -90,7 +90,7 @@ async def post_teacher(teacher: Teacher):
 
 @app.post('/post-donator')
 async def post_donator(donator: Donator):
-    if execute(f'SELECT * FROM donator WHERE username = "{donator.username}"'):
+    if execute(f'SELECT * FROM donator WHERE username = \'{donator.username}\''):
         return {'status': 'error', 'message': 'Username already exists'}
 
     args = [
@@ -105,7 +105,7 @@ async def post_donator(donator: Donator):
 async def post_donation(donation: Donation):
     id = ''.join(random.choices(string.ascii_letters, k = 10))
 
-    while execute(f'SELECT * FROM donation WHERE id = {id}'):
+    while execute(f'SELECT * FROM donation WHERE id = \'{id}\''):
         id = ''.join(random.choices(string.ascii_letters, k = 10))
 
     args = [
@@ -121,7 +121,7 @@ async def post_donation(donation: Donation):
 @app.get('/get-students')
 async def get_students(subject: str):
     students = []
-    result = execute(f'SELECT * FROM student WHERE subject = "{subject}"')
+    result = execute(f'SELECT * FROM student WHERE subject = \'{subject}\'')
 
     for values in result:
         students.append({
@@ -134,7 +134,7 @@ async def get_students(subject: str):
 @app.get('/get-teachers')
 async def get_teachers(subject: str):
     teachers = []
-    result = execute(f'SELECT * FROM teacher WHERE subject = "{subject}"')
+    result = execute(f'SELECT * FROM teacher WHERE subject = \'{subject}\'')
 
     for values in result:
         teachers.append({
@@ -147,7 +147,7 @@ async def get_teachers(subject: str):
 @app.get('/get-donations')
 async def get_donations(subject: str):
     donations = []
-    result = execute(f'SELECT * FROM donation NATURAL JOIN donator WHERE subject = "{subject}"')
+    result = execute(f'SELECT * FROM donation NATURAL JOIN donator WHERE subject = \'{subject}\'')
 
     for values in result:
         donations.append({
