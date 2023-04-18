@@ -2,14 +2,14 @@ from fastapi import FastAPI
 from mangum import Mangum
 import boto3
 import os
-from pydantic import BaseModel
+#from pydantic import BaseModel
 import random
 import string
 
 app = FastAPI()
 handler = Mangum(app)
 rds_client = boto3.client('rds-data', region_name = 'us-west-1')
-
+'''
 class Student(BaseModel):
     username: str,
     password: str,
@@ -33,7 +33,7 @@ class Donation(BaseModel):
     username: str,
     description: str,
     subject: str
-
+'''
 def execute(sql, type = 'GET', args = []):
     response = rds_client.execute_statement(
         secretArn = os.environ.get('db_credentials_secrets_store_arn'),
