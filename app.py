@@ -60,11 +60,13 @@ async def root():
 
 @app.post('/post-student')
 async def post_student(student: Student):
+    return "sffd"
+    '''
     if execute(f'SELECT * FROM student WHERE username = "{student.username}"'):
         return {'status': 'error', 'message': 'Username already exists'}
-        
+
     return {'status': 'success'}
-    '''
+    
     args = [
         {'name': 'username', 'value': {'stringValue': student.username}},
         {'name': 'password', 'value': {'stringValue': student.password}},
