@@ -5,6 +5,7 @@ import os
 from pydantic import BaseModel
 import random
 import string
+import urllib.parse
 
 app = FastAPI()
 handler = Mangum(app)
@@ -120,6 +121,8 @@ async def post_donation(donation: Donation):
 
 @app.get('/get-students')
 async def get_students(subject: str):
+    subject = urllib.parse.unquote_plus(subject)
+
     students = []
     result = execute(f'SELECT * FROM student WHERE subject = \'{subject}\'')
 
@@ -133,6 +136,8 @@ async def get_students(subject: str):
 
 @app.get('/get-teachers')
 async def get_teachers(subject: str):
+    subject = urllib.parse.unquote_plus(subject)
+
     teachers = []
     result = execute(f'SELECT * FROM teacher WHERE subject = \'{subject}\'')
 
@@ -146,6 +151,8 @@ async def get_teachers(subject: str):
 
 @app.get('/get-donations')
 async def get_donations(subject: str):
+    subject = urllib.parse.unquote_plus(subject)
+
     donations = []
     result = execute(f'SELECT * FROM donation NATURAL JOIN donator WHERE subject = \'{subject}\'')
 
@@ -157,3 +164,45 @@ async def get_donations(subject: str):
         })
 
     return donations
+
+@app.get('/login-student')
+async def login_student(username: str, password: str):
+    response = execute(f'SELECT * FROM student WHERE username = \'{username}\' AND password = \'{password}\'')
+
+    if not response:
+        return {'status': 'error', 'messsage': 'username or password is incorrect'}
+
+    student = {
+        'subject': response[0][2]['stringValue'],
+        'email': response[0][3]['stringValue'],
+        'address': response[0][4]['stringValue']
+    }
+
+    return {'status': 'success', 'student': student}
+
+@app.get('/login-teacher')
+async def login_teacher(username: str, password: str):
+    response = execute(f'SELECT * FROM teacher WHERE username = \'{username}\' AND password = \'{password}\'')
+
+    if not response:
+        return {'status': 'error', 'messsage': 'username or password is incorrect'}
+
+    teacher = {
+        'subject': response[0][2]['stringValue'],
+        'email': response[0][3]['stringValue']
+    }
+
+    return {'status': 'success', 'teacher': teacher}
+
+@app.get('/login-donator')
+async def login_donator(username: str, password: str):
+    response = execute(f'SELECT * FROM donator WHERE username = \'{username}\' AND password = \'{password}\'')
+
+    if not response:
+        return {'status': 'error', 'messsage': 'username or password is incorrect'}
+
+    donator = {
+        'email': response[0][2]['stringValue'],
+    }
+
+    return {'status': 'success', 'donator': donator}
