@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from mangum import Mangum
 import boto3
 import os
@@ -10,6 +11,23 @@ import urllib.parse
 app = FastAPI()
 handler = Mangum(app)
 rds_client = boto3.client('rds-data', region_name = 'us-west-1')
+
+# To be able to access endpoint from local machine
+origins = [
+    "http://localhost",
+    "http://localhost:8000",
+    "http://127.0.0.1",
+    "http://127.0.0.1:8000",
+]
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class Student(BaseModel):
     username: str
